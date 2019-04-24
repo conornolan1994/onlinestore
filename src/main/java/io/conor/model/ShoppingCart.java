@@ -44,9 +44,9 @@ public class ShoppingCart {
 		return products;
 	}
 
-	public double calcTotalCost() {
+	public int calcTotalCost() {
 	 
-	    double total = 0.0;
+	    int total = 0;
 	    for (Product product : products) {
 	 
 	total += product.getPrice();
@@ -57,7 +57,7 @@ public class ShoppingCart {
 	 
 	  public boolean pay(PaymentMethod method) {
 	 
-	    double totalCost = calcTotalCost();
+	    int totalCost = calcTotalCost();
 	    return method.pay(totalCost);
 	  }
 	}

@@ -16,7 +16,7 @@ public class MasterCard implements PaymentMethod {
 	  }
 	 
 	  @Override
-	  public boolean pay(double amount) {
+	  public boolean pay(int totalPrice) {
 	 
 	    return true; // if payment goes through
 	  }

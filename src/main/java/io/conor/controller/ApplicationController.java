@@ -27,14 +27,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import io.conor.model.PaymentMethod;
 import io.conor.model.Product;
 import io.conor.model.User;
 import io.conor.service.ProductService;
+import io.conor.service.ShoppingCartService;
 import io.conor.service.UserService;
 
 @Controller
@@ -42,42 +45,132 @@ public class ApplicationController {
 	
 	private ArrayList<Product> shoppingCart = new ArrayList<Product>();
 	
+	
+	private int totalPrice;
+	
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private ProductService productService;
 	
-	@RequestMapping("/cart")
-	public String openCart(@RequestParam int id, HttpServletRequest request)
+	@RequestMapping(value="/cart", method = RequestMethod.GET)
+	public String getCart(HttpServletRequest request)
 	{
 		
-		Product newProduct = productService.getProductById(id);
-		shoppingCart.add(newProduct);
 		
-		newProduct.setStockLevel(newProduct.getStockLevel()-1);
-		
-		System.out.println(shoppingCart.size());
 		for (int i = 0; i < shoppingCart.size();i++)
 		{
-			System.out.println(shoppingCart.get(0).getTitle());
+			totalPrice = totalPrice + shoppingCart.get(i).getPrice();
 		}
-		//request.setAttribute("cart", productService.)
+		
+		request.setAttribute("shoppingCart", shoppingCart);
+		request.setAttribute("totalPrice", totalPrice);
+		totalPrice = 0;
 		request.setAttribute("mode","MODE_SHOPPING_CART");
 		
+		
 		return "welcome";
+		
+	}
+	
+	@RequestMapping(value = "/addToCart", method = RequestMethod.POST)
+	public String openCart(HttpServletRequest request)
+	{
+		int id = Integer.parseInt(request.getParameter("id"));
+		Product newProduct = productService.getProductById(id);
+		shoppingCart.add(newProduct);
+		if (newProduct.getId()==(productService.getProductById(id).getId()))
+		{
+			productService.getProductById(id).setStockLevel(productService.getProductById(id).getStockLevel()-1);
+		}
+		
+		for (int i = 0; i < shoppingCart.size();i++)
+		{
+			if (newProduct.getId()==(productService.getProductById(id).getId()))
+			{
+				productService.getProductById(id).setStockLevel(productService.getProductById(id).getStockLevel()-1);
+				break;
+			}
+			continue;
+		
+		}
+		
+		for (int i = 0; i < shoppingCart.size();i++)
+		{
+			totalPrice = totalPrice + shoppingCart.get(i).getPrice();
+		}
+		
+		request.setAttribute("shoppingCart", shoppingCart);
+		request.setAttribute("totalPrice", totalPrice);
+		totalPrice = 0;
+		request.setAttribute("mode","MODE_SHOPPING_CART");
+		
+		
+		return "welcome";
+		
+		
+	}
+	
+	
+	
+	@RequestMapping(value ="/removeFromCart",method = RequestMethod.POST)
+	public String removeFromCart(HttpServletRequest request)
+	{
+		
+		int id = Integer.parseInt(request.getParameter("id"));
+		Product newProduct = productService.getProductById(id);
+		shoppingCart.remove(newProduct);
+		
+		newProduct.setStockLevel(newProduct.getStockLevel()+1);
+		for (int i = 0; i < shoppingCart.size();i++) {
+			if (shoppingCart.get(i).getId()==newProduct.getId())
+				{
+					productService.getProductById(id).setStockLevel(productService.getProductById(id).getStockLevel()+1);
+					shoppingCart.remove(shoppingCart.get(i));
+					break;
+				}
+			
+			
+		}
+		totalPrice=0;
+		for (int i = 0; i < shoppingCart.size();i++)
+		{
+			totalPrice = totalPrice + shoppingCart.get(i).getPrice();
+		}
+		
+		request.setAttribute("shoppingCart", shoppingCart);
+		request.setAttribute("totalPrice", totalPrice);
+		request.setAttribute("mode","MODE_SHOPPING_CART");
+		
+		
+		return "welcome";
+		
+
 	}
 	
 	@RequestMapping("/purchase")
-	public String purchaseCart(@RequestParam int id, HttpServletRequest request)
+	public String purchaseCart(@SessionAttribute("user") User user,@RequestParam int price, HttpServletRequest request)
 	{
-		return "welcome";
+		
+		for (int i = 0; i < shoppingCart.size();i++)
+		{
+			totalPrice = totalPrice + shoppingCart.get(i).getPrice();
+		}
+		request.setAttribute("user", user);
+		
+		request.setAttribute("shoppingCart", shoppingCart);
+		request.setAttribute("totalPrice", totalPrice);
+		request.setAttribute("mode","MODE_PAYMENT");
+		
+		
+		return "paymentpage";
 	}
 	
 	
-	@RequestMapping("/welcome")
+	@RequestMapping("/")
 	public String Welcome(HttpServletRequest request) {
 		request.setAttribute("mode","MODE_HOME");
-		return "welcome";
+		return "userpage";
 	}
 	@RequestMapping("/register")
 	public String registration(HttpServletRequest request) {
@@ -104,10 +197,20 @@ public class ApplicationController {
 		return "welcome";
 	}
 	
+	@GetMapping("/info")
+	   public String userInfo(@SessionAttribute("user") User user) {
+
+	      System.out.println("Email: " + user.getEmail());
+	      System.out.println("First Name: " + user.getUsername());
+
+	      return "user";
+	   }
+	
 	@RequestMapping ("/login-user")
-	public String loginUser(@ModelAttribute User user, HttpServletRequest request) {
+	public String loginUser(HttpSession session,@ModelAttribute("user") User user, HttpServletRequest request) {
 		if(userService.findByEmailAndPassword(user.getEmail(), user.getPassword())!=null) {
-			return "userpage";
+			addUserToSession(user, session);
+			return "welcome";
 		}
 		else if (user.getEmail().equals("admin") && user.getPassword().equals("admin123"))
 		{
@@ -123,13 +226,14 @@ public class ApplicationController {
 	@RequestMapping("/logout")
 	public String logout(HttpSession session, HttpServletRequest request) {
 		session.invalidate();
+		shoppingCart = null;
 		request.setAttribute("mode", "MODE_HOME");
-		return "welcome";
+		return "userpage";
 	}
  
 	
 	private void addUserToSession(User user, HttpSession session) {
-		// TODO Auto-generated method stub
+		session.setAttribute("user", user);
 		
 	}
  

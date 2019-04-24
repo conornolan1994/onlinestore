@@ -16,7 +16,7 @@ public class Visa implements PaymentMethod {
 	  }
 	 
 	  @Override
-	  public boolean pay(double amount) {
+	  public boolean pay(int price) {
 	 
 	    return true; // if payment goes through
 	  }

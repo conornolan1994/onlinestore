@@ -18,32 +18,27 @@
 </head>
 <body>
 	<div role="navigation">
-		<div class="navbar navbar-inverse">
-			<a href="/welcome" class="navbar-brand">Assingment3</a>
+		<div class="navbar navbar-expand-sm bg-default navbar-light">
+			<a href="/welcome" class="navbar-brand">Conor's Shop</a>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="/show-tracks">Products</a></li>
-					<li><a href="/logout">Logout</a></li>
+				
+					<li><a href="/login">Login</a></li>
+					<li><a href="/register">Register</a></li>
+					<li><a href="/products">Products</a>
+					<li><a href="/cart">Cart</a>
+					
 				</ul>
 			</div>
 		</div>
 	</div>
 	<div class="container-expand-sm bg-default navbar-dark"" id="homediv">
 				<div class="jumbotron text-center">
-					<h1>Welcome to your profile</h1>
-					<h3><b>${user.email }</b></h3>
+					<h1>Welcome</h1>
 				</div>
 			</div>
 			
-			<div>
-		<form method="POST" enctype="multipart/form-data" action="/">
-			<table>
-				<tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-				<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
-			</table>
-		</form>
-	</div>
-	
+		
 	
 
 	

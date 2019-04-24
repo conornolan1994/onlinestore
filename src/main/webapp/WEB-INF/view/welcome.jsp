@@ -23,9 +23,9 @@
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 				
-					<li><a href="/login">Login</a></li>
-					<li><a href="/register">Register</a></li>
+					<li><a href="/logout">Log Out</a></li>
 					<li><a href="/products">Products</a>
+					<li><a href="/cart">Cart</a>
 					
 				</ul>
 			</div>
@@ -127,18 +127,17 @@
 		
 		<c:when test="${mode=='MODE_SHOPPING_CART' }">
 			<div class="container text-center" id="tasksDiv">
-				<h3>Products</h3>
+				<h3>Cart</h3>
 				<hr>
 				<div class="table-responsive">
 					<table class="table table-dark table-hover">
 						<thead>
 							<tr>
-								<th>Id</th>
+								<!-- <th>Id</th> -->
 								<th>Title</th>
 								<th>Manufacturer</th>
 								<th>Category</th>
 								<th>Price</th>
-								<th>Stock Level</th>
 								<th>Image</th>
 								<th>Remove from Cart</th>
 							</tr>
@@ -146,19 +145,40 @@
 						<tbody>
 							<c:forEach var="product" items="${shoppingCart }">
 								<tr>
-									<td align="left">${product.id}</td>
+									
+									<%-- <td align="left">${product.id}</td> --%>
 									<td align="left">${product.title}</td>
 									<td align="left">${product.manufacturer}</td>
 									<td align="left">${product.category}</td>
 									<td align="left">${product.price}</td>
-									<td align="left">${product.stockLevel }</td>
 									<td align="left"><div style=""><img border="3"  
 									        src="resources/images/${product.image}" height="145" width="145" /></div>
-									        <td align="left"><a href="/cart?id=${product.id }"><span
-											class="glyphicon glyphicon-shopping-cart"  style="font-size:40px"></span></a></td>
+									<td><form class="form-horizontal" method ="post" action = "removeFromCart">
+									<div class ="form-group">
+									<input type ="hidden" name = "id" value ="${product.id }" />
+									<input type ="submit" class ="btn btn-primary btn_sm" value = "Remove from Cart">
+									</div>
+									</form> </td>
 									
 								</tr>
 							</c:forEach>
+							
+								<tr>
+									<td align="left"></td>
+									<td align="left"></td>
+									<td align="left"></td>
+									<td align="left"><b>Total Price = </b></td>
+									<td align="left"><b>${totalPrice}</b></td>
+									<td align="left"></td>
+									<td align="left"><b></b><form class="form-horizontal" method ="post" action = "purchase">
+									<div class ="form-group">
+									<input type ="hidden" name = "price" value ="${totalPrice }" />
+									<input type ="submit" class ="btn btn-primary btn_sm" value = "Purchase">
+									</div>
+									</form> </b></td>
+									
+								</tr>
+							
 						</tbody>
 					</table>
 				</div>
@@ -184,7 +204,9 @@
 							</tr>
 						</thead>
 						<tbody>
+						
 							<c:forEach var="product" items="${products }">
+							<input type ="hidden" name = "id" value ="${product.id }" />
 								<tr>
 									<td align="left">${product.id}</td>
 									<td align="left">${product.title}</td>
@@ -194,8 +216,12 @@
 									<td align="left">${product.stockLevel }</td>
 									<td align="left"><div style=""><img border="3"  
 									        src="resources/images/${product.image}" height="145" width="145" /></div>
-									        <td align="left"><a href="/cart?id=${product.id }"><span
-											class="glyphicon glyphicon-shopping-cart"  style="font-size:40px"></span></a></td>
+									<td><form class="form-horizontal" method ="post" action = "addToCart">
+									<div class ="form-group">
+									<input type ="hidden" name = "id" value ="${product.id }" />
+									<input type ="submit" class ="btn btn-primary btn_sm" value = "Add to Cart">
+									</div>
+									</form> </td>
 									
 								</tr>
 							</c:forEach>

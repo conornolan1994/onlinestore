@@ -53,6 +53,18 @@ public class User {
 
 
 
+	public String getShippingAddress() {
+		return shippingAddress;
+	}
+	public void setShippingAddress(String shippingAddress) {
+		this.shippingAddress = shippingAddress;
+	}
+	public Set<UserOrder> getUserOrders() {
+		return userOrders;
+	}
+	public void setUserOrders(Set<UserOrder> userOrders) {
+		this.userOrders = userOrders;
+	}
 	public int getId() {
 		return id;
 	}
