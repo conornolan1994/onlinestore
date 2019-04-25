@@ -272,8 +272,61 @@
 					</form>
 					</div>
 					</c:when>
-					<c:when test="${mode=='ALL_USERS' }">
-			<div class="container text-center" id="tasksDiv">
+					
+				<c:when test="${mode=='ALL_USERS' }">
+					<%@page import="java.util.ArrayList"%>      <%--Importing all the dependent classes--%>
+					<%@page import="io.conor.model.User"%>
+					<%@page import="java.util.Iterator"%> 
+					 
+					<% ArrayList<User> users = (ArrayList) request.getAttribute("users"); %> <%--Assigning ArrayList object containing Employee data to the local object --%>
+					 
+					
+					 <div class="container text-center" id="tasksDiv">
+					 <h3>Users</h3>
+					<table class="table table-dark table-hover" align ="center">
+					 <thead>
+					<tr>
+					<th>User ID</th>
+					<th>Email</th>
+					<th>Username</th>
+					<th>Password</th>
+					<th>Delete</th>
+					<th>Edit</th>
+					</tr>
+					</thead>
+					<tbody>
+					<%
+					// Iterating through subjectList
+					 
+					if(request.getAttribute("users") != null)  // Null check for the object
+					{
+					 Iterator<User> iterator = users.iterator();  // Iterator interface
+					 
+					 while(iterator.hasNext())  // iterate through all the data until the last record
+					 // iterate through all the data until the last record
+					  {
+					  User user = iterator.next(); //assign individual employee record to the employee class object
+					  %>
+					  <tr>
+					  <td align="left"><%=user.getId()%></td>
+					  <td align="left"><%=user.getEmail()%></td>
+					  <td align="left"><%=user.getUsername()%></td>
+					  <td align="left"><%=user.getPassword()%></td>
+					 
+					  <td align="left"><a href="/delete-user?id=<%=user.getId()%>"><span
+																class="glyphicon glyphicon-trash"></span></a></td>
+														<td align="left"><a href="/edit-user?id=<%=user.getId()%>"><span
+																class="glyphicon glyphicon-pencil"></span></a></td>
+																</tr>
+					  <%
+					  
+					  }
+					 }
+					 %>
+					 </tbody>
+					 </table>
+					 </div>
+			<%-- <div class="container text-center" id="tasksDiv">
 				<h3>Users</h3>
 				<hr>
 				<div class="table-responsive">
@@ -305,7 +358,7 @@
 						</tbody>
 					</table>
 				</div>
-			</div>
+			</div> --%>
 		</c:when>
 	</c:choose>
 
