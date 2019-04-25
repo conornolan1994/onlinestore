@@ -3,7 +3,9 @@ package io.conor.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,9 +35,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import io.conor.model.MasterCard;
 import io.conor.model.PaymentMethod;
 import io.conor.model.Product;
 import io.conor.model.User;
+import io.conor.model.UserOrder;
+import io.conor.model.Visa;
+import io.conor.service.OrderService;
 import io.conor.service.ProductService;
 import io.conor.service.ShoppingCartService;
 import io.conor.service.UserService;
@@ -44,10 +50,17 @@ import io.conor.service.UserService;
 public class ApplicationController {
 	
 	private ArrayList<Product> shoppingCart = new ArrayList<Product>();
+	private Set<Product> set = new HashSet<Product>();
 	
 	
 	private int totalPrice;
+	private String name;
+	private String cardNum;
+	private String cardName;
+	private String payment_method;
 	
+	@Autowired
+	private OrderService orderService;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -138,6 +151,7 @@ public class ApplicationController {
 			totalPrice = totalPrice + shoppingCart.get(i).getPrice();
 		}
 		
+		
 		request.setAttribute("shoppingCart", shoppingCart);
 		request.setAttribute("totalPrice", totalPrice);
 		request.setAttribute("mode","MODE_SHOPPING_CART");
@@ -149,21 +163,72 @@ public class ApplicationController {
 	}
 	
 	@RequestMapping("/purchase")
-	public String purchaseCart(@SessionAttribute("user") User user,@RequestParam int price, HttpServletRequest request)
+	public String purchaseCart(HttpSession session, HttpServletRequest request)
 	{
 		
 		for (int i = 0; i < shoppingCart.size();i++)
 		{
 			totalPrice = totalPrice + shoppingCart.get(i).getPrice();
 		}
+		
+		User user = (User) session.getAttribute("user");
+		
+		
 		request.setAttribute("user", user);
 		
 		request.setAttribute("shoppingCart", shoppingCart);
 		request.setAttribute("totalPrice", totalPrice);
 		request.setAttribute("mode","MODE_PAYMENT");
+		totalPrice = 0;
 		
 		
 		return "paymentpage";
+	}
+	
+	
+	@RequestMapping("/purchaseCart")
+	public String finishPayment(HttpSession session,HttpServletRequest request,@ModelAttribute("userOrder") UserOrder userOrder)
+	{
+		PaymentMethod method = null;
+		
+		User user = (User) session.getAttribute("user");
+		//shoppingCart = (ArrayList<Product>) request.getAttribute("shoppingCart");
+		set = new HashSet<Product>(shoppingCart);
+		for (int i = 0; i < shoppingCart.size();i++)
+		{
+			totalPrice = totalPrice + shoppingCart.get(i).getPrice();
+		}
+		
+		UserOrder order = new UserOrder(user,totalPrice,set);
+		
+		if (request.getParameter("payment_method").equals("Visa")) {
+            Visa visa = new Visa(request.getParameter("cardName"), request.getParameter("cardNum"), request.getParameter("expDate"));
+            method = visa;
+
+            if (order.pay(visa, totalPrice)){
+                orderService.saveOrder(order);
+                shoppingCart.clear();
+                set.clear();
+                request.setAttribute("mode","MODE_VISA_PAYMENT");
+            }
+            
+        } else if (request.getParameter("payment_method").equals("Mastercard")) {
+            MasterCard mastercard = new MasterCard(request.getParameter("cardName"), request.getParameter("cardNum"), request.getParameter("expDate"));
+            	method = mastercard;
+            if (order.pay(mastercard,totalPrice)) {
+                orderService.saveOrder(order);
+                shoppingCart.clear();
+                set.clear();
+                request.setAttribute("mode","MODE_MASTERCARD_PAYMENT");
+
+            }
+            
+        }
+		
+		
+		
+		return "welcome";
+		
 	}
 	
 	
@@ -207,13 +272,18 @@ public class ApplicationController {
 	   }
 	
 	@RequestMapping ("/login-user")
-	public String loginUser(HttpSession session,@ModelAttribute("user") User user, HttpServletRequest request) {
+	public String loginUser(@ModelAttribute("user") User user, HttpServletRequest request) {
 		if(userService.findByEmailAndPassword(user.getEmail(), user.getPassword())!=null) {
-			addUserToSession(user, session);
+			User LoggedInUser = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
+			HttpSession session = request.getSession();
+			session.setAttribute("user",LoggedInUser);
+			System.out.println("hello" + LoggedInUser.getId() + "    " + LoggedInUser.getUsername());
+			//addUserToSession(user, session);
 			return "welcome";
 		}
 		else if (user.getEmail().equals("admin") && user.getPassword().equals("admin123"))
 		{
+			
 			return "adminpage";
 		}
 		else {

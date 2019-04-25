@@ -6,9 +6,9 @@ public class MasterCard implements PaymentMethod {
 	 
 	  private final String name;
 	  private final String cardNumber;
-	  private final Date expires;
+	  private final String expires;
 	 
-	  public MasterCard(String name, String cardNumber, Date expires) {
+	  public MasterCard(String name, String cardNumber, String expires) {
 	    super();
 	    this.name = name;
 	    this.cardNumber = cardNumber;

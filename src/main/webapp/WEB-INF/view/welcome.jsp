@@ -231,6 +231,20 @@
 			</div>
 		</c:when>
 		
+		<c:when test="${mode=='MODE_VISA_PAYMENT' }">
+			<div class="container text-center">
+				<h4>Visa Payment Successful</span></h4>
+				
+			</div>
+		</c:when>
+					
+					<c:when test="${mode=='MODE_MASTERCARD_PAYMENT' }">
+			<div class="container text-center">
+				<h4>MASTERCARD Payment Successful</span></h4>
+				
+					</div>
+					</c:when>
+		
 
 		<c:when test="${mode=='MODE_UPDATE' }">
 			<div class="container text-center">

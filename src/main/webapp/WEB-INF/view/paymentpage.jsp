@@ -39,38 +39,53 @@
 			<div class="container text-center">
 				<h3>Payment</h3>
 				<hr>
+				<h2>Total payment: ${totalPrice}</span></h2>
 				<form class="form-horizontal" method="POST" action="purchaseCart">
 					<input type="hidden" name="id" value="${user.id }" />
 					
+					</n>
+					</n>
+					</n>
+					</n>
+					</n>
+					</n>
+					
+					</n>
+					</n>
+					</n>
 					
 					
 					
-					<tr>
-									<td align="left"><b>Total Price = </b></td>
-									<td align="left"><b>${totalPrice}</b></td>
-									</tr>
-									<tr>
-									<td align="left">${user.username}</td>
-									</tr>
 					<div class="form-group">
-						<label class="control-label col-md-3">username</label>
+                        <label class="col-form-label" for="payment_method">Select Payment Method: </label>
+                        <select class="form-control" id="payment_method" name="payment_method" value ="${payment_method}">
+                            <option value="default">Select a payment method</option>
+                            <option value="Visa">Visa</option>
+                            <option value="Mastercard">Mastercard</option>
+                        </select>
+                        <br/>
+                        <p> </p>
+                    </div>
+						
+					<div class="form-group">
+						<label class="control-label col-md-3">Card Name</label>
 						<div class="col-md-5">
-							<input type="text" class="form-control" name="username"
-								value="${user.username }" />
+							<input type="text" class="form-control" name="cardName"
+								value="${cardName}" />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-md-3">Shipping Address</label>
+						<label class="control-label col-md-3">Card Number</label>
 						<div class="col-md-5">
-							<input type="text" class="form-control" name="shippingAddress"
-								value="${user.shippingAddress }" />
+							<input type="number" class="form-control" name="cardNum"
+								value="${cardNum}" />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-md-3">Password</label>
+						<label class="control-label col-md-3">Expiry Date</label>
 						<div class="col-md-5">
-							<input type="password" class="form-control" name="password"
-								value="${user.password }" />
+							<input type="text" class="form-control" name="expDate"
+								value="${expDate}" />
 						</div>
 					</div>
 					
@@ -82,6 +97,8 @@
 			</div>
 		</c:when>
 		</c:choose>
+		
+		
 		
 		</body>
 

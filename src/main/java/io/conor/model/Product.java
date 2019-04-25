@@ -35,8 +35,7 @@ public class Product {
 //	@OneToOne(cascade = {CascadeType.ALL})
 //	private Category category;
 	
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
-	private Set<ShoppingCart> carts;
+
 
 
 
@@ -46,14 +45,6 @@ public class Product {
 
 	}
 	
-	
-	 public Set<ShoppingCart> getCarts() {
-	        return carts;
-	    }
-
-	    public void setCarts(Set<ShoppingCart> carts) {
-	        this.carts = carts;
-	    }
 
 	
 
