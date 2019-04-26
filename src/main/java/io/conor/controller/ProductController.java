@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.conor.category.Category;
 import io.conor.model.Product;
-import io.conor.product.Category;
 import io.conor.service.ProductService;
 
 

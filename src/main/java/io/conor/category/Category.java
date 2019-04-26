@@ -1,4 +1,4 @@
-package io.conor.product;
+package io.conor.category;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

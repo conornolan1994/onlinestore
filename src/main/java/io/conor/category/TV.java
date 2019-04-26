@@ -1,4 +1,4 @@
-package io.conor.product;
+package io.conor.category;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -7,12 +7,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 @Entity
-public class Phone extends Category{
+public class TV extends Category {
 
 	private String categoryType;
 
 	
-	public Phone(String categoryType) {
+	public TV(String categoryType) {
 		super();
 		this.categoryType = categoryType;
 	}
@@ -21,7 +21,6 @@ public class Phone extends Category{
 //	@Override
 //	   public void createCategory() {
 //			Category category = new Home(categoryType);
-//			//Product product = new Product(title, manufacturer, price, homeElectronic.getCategoryType(), image);
 //	   }
 
 
@@ -33,5 +32,4 @@ public class Phone extends Category{
 	public void setCategoryType(String categoryType) {
 		this.categoryType = categoryType;
 	}
-
 }

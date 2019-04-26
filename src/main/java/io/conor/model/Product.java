@@ -11,8 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
-import io.conor.product.Category;
-import io.conor.product.CategoryFactory;
+import io.conor.category.Category;
+import io.conor.category.CategoryFactory;
 
 @Entity
 public class Product {

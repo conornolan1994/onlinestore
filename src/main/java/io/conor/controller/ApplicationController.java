@@ -36,14 +36,14 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import io.conor.factory.PaymentMethodFactory;
-import io.conor.model.MasterCard;
-import io.conor.model.PaymentMethod;
 import io.conor.model.Product;
 //import io.conor.model.Product.ProductBuilder;
 //import io.conor.model.ProductBuilder;
 import io.conor.model.User;
 import io.conor.model.UserOrder;
-import io.conor.model.Visa;
+import io.conor.payment.MasterCard;
+import io.conor.payment.PaymentMethod;
+import io.conor.payment.Visa;
 import io.conor.service.OrderService;
 import io.conor.service.ProductService;
 import io.conor.service.ShoppingCartService;

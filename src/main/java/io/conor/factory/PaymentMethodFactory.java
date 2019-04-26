@@ -1,8 +1,8 @@
 package io.conor.factory;
 
-import io.conor.model.MasterCard;
-import io.conor.model.PaymentMethod;
-import io.conor.model.Visa;
+import io.conor.payment.MasterCard;
+import io.conor.payment.PaymentMethod;
+import io.conor.payment.Visa;
 
 public class PaymentMethodFactory {
 

@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import io.conor.payment.PaymentMethod;
+
 @Entity
 public class ShoppingCart {
 	

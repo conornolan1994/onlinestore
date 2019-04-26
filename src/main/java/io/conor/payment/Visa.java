@@ -1,4 +1,4 @@
-package io.conor.model;
+package io.conor.payment;
 
 
 public class Visa implements PaymentMethod {

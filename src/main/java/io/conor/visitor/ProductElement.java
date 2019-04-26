@@ -1,6 +1,4 @@
-package io.conor.model;
-
-import io.conor.visitor.ShoppingCartVisitor;
+package io.conor.visitor;
 
 public interface ProductElement {
 

@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import io.conor.payment.PaymentMethod;
+
 @Entity
 public class UserOrder {
 	@Id

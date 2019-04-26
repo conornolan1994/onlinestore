@@ -1,4 +1,4 @@
-package io.conor.product;
+package io.conor.category;
 
 public class CategoryFactory {
 	 
