@@ -50,7 +50,7 @@ public class Product {
 
 
 
-	public Product(String title, String manufacturer, int price, String category,Integer stockLevel, String image) {
+	public Product(String title, String manufacturer, int price, String category,int stockLevel, String image) {
 		super();
 		this.title = title;
 		this.manufacturer = manufacturer;
@@ -68,10 +68,6 @@ public class Product {
 
 
 
-	public void setImage(String image) {
-		this.image = image;
-	}
-
 
 
 
@@ -84,10 +80,6 @@ public class Product {
 
 
 
-	public void setStockLevel(int stockLevel) {
-		this.stockLevel = stockLevel;
-	}
-
 
 
 
@@ -97,12 +89,6 @@ public class Product {
 	}
 
 
-
-
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 
 
@@ -118,12 +104,6 @@ public class Product {
 
 
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-
-
 
 
 	public String getManufacturer() {
@@ -132,11 +112,6 @@ public class Product {
 
 
 
-
-
-	public void setManufacturer(String manufacturer) {
-		this.manufacturer = manufacturer;
-	}
 
 
 
@@ -150,17 +125,48 @@ public class Product {
 
 
 
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
-
-
 
 
 	public String getCategory() {
 		return category;
 	}
+
+
+
+
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+
+
+
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+
+
+
+
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+
+
+
+
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
 
 
 
@@ -173,6 +179,149 @@ public class Product {
 
 
 
+
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+
+
+
+
+
+	public void setStockLevel(Integer stockLevel) {
+		this.stockLevel = stockLevel;
+	}
+
+
+
+
+
 	
+	
+//	public static class ProductBuilder {
+//		
+//		private int id;
+//		private String title;
+//		private String manufacturer;
+//		private int price;
+//		private String category;
+//		private String image;
+//
+//
+//		private int stockLevel;
+//		
+//		public ProductBuilder()
+//		{
+//			
+//		}
+//		
+//		
+//
+//
+//		
+//		
+//		
+//
+//
+//
+//
+//		public ProductBuilder setId(int id) {
+//			this.id = id;
+//			return this;
+//		}
+//
+//
+//
+//
+//
+//
+//
+//
+//		public ProductBuilder setTitle(String title) {
+//			this.title = title;
+//			return this;
+//		}
+//
+//
+//
+//
+//
+//
+//
+//		public ProductBuilder setManufacturer(String manufacturer) {
+//			this.manufacturer = manufacturer;
+//			return this;
+//		}
+//
+//
+//
+//
+//
+//
+//		public ProductBuilder setPrice(int price) {
+//			this.price = price;
+//			return this;
+//		}
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//		public ProductBuilder setCategory(String category) {
+//			this.category = category;
+//			return this;
+//		}
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//		public ProductBuilder setImage(String image) {
+//			this.image = image;
+//			return this;
+//		}
+//
+//
+//
+//
+//
+//
+//		public ProductBuilder setStockLevel(int stockLevel) {
+//			this.stockLevel = stockLevel;
+//			return this;
+//		}
+//
+//
+//		
+//
+//
+//
+//		public ProductBuilder(String title, String manufacturer, int price, String category,int stockLevel, String image) {
+//			super();
+//			this.title = title;
+//			this.manufacturer = manufacturer;
+//			this.price = price;
+//			this.category = category;
+//			this.image = image;
+//		}
+//		
+//		public Product build() {
+//	        return new Product(title, manufacturer,price, category,stockLevel,image);
+//	    }
+//
+//
+//
+//	}
+//	
 
 }

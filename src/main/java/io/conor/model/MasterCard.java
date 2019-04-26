@@ -1,20 +1,28 @@
 package io.conor.model;
 
-import java.util.Date;
-
 public class MasterCard implements PaymentMethod {
 	 
 	  private final String name;
 	  private final String cardNumber;
 	  private final String expires;
+	  private static MasterCard card;
 	 
-	  public MasterCard(String name, String cardNumber, String expires) {
-	    super();
+	  private MasterCard(String name, String cardNumber, String expires) {
 	    this.name = name;
 	    this.cardNumber = cardNumber;
 	    this.expires = expires;
 	  }
 	 
+	  public static MasterCard getInstance(String name, String cardNumber, String expires)
+	  {
+		  if (card==null)
+		  {
+			  card= new MasterCard(name,cardNumber,expires);
+			  
+		  }
+		  return card;
+	  }
+	  
 	  @Override
 	  public boolean pay(int totalPrice) {
 	 

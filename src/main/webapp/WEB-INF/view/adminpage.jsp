@@ -278,7 +278,10 @@
 					<%@page import="io.conor.model.User"%>
 					<%@page import="java.util.Iterator"%> 
 					 
-					<% ArrayList<User> users = (ArrayList) request.getAttribute("users"); %> <%--Assigning ArrayList object containing Employee data to the local object --%>
+					<% ArrayList<User> users = (ArrayList) request.getAttribute("users"); 
+			         
+			      
+                                   %> <%--Assigning ArrayList object containing Employee data to the local object --%>
 					 
 					
 					 <div class="container text-center" id="tasksDiv">

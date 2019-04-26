@@ -35,9 +35,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import io.conor.factory.PaymentMethodFactory;
 import io.conor.model.MasterCard;
 import io.conor.model.PaymentMethod;
 import io.conor.model.Product;
+//import io.conor.model.Product.ProductBuilder;
+//import io.conor.model.ProductBuilder;
 import io.conor.model.User;
 import io.conor.model.UserOrder;
 import io.conor.model.Visa;
@@ -90,6 +93,7 @@ public class ApplicationController {
 	public String openCart(HttpServletRequest request)
 	{
 		int id = Integer.parseInt(request.getParameter("id"));
+		//Product newProduct = Product.ProductBuilder(productService.getProductById(id));
 		Product newProduct = productService.getProductById(id);
 		shoppingCart.add(newProduct);
 		if (newProduct.getId()==(productService.getProductById(id).getId()))
@@ -189,8 +193,6 @@ public class ApplicationController {
 	@RequestMapping("/purchaseCart")
 	public String finishPayment(HttpSession session,HttpServletRequest request,@ModelAttribute("userOrder") UserOrder userOrder)
 	{
-		PaymentMethod method = null;
-		
 		User user = (User) session.getAttribute("user");
 		//shoppingCart = (ArrayList<Product>) request.getAttribute("shoppingCart");
 		set = new HashSet<Product>(shoppingCart);
@@ -201,29 +203,16 @@ public class ApplicationController {
 		
 		UserOrder order = new UserOrder(user,totalPrice,set);
 		
-		if (request.getParameter("payment_method").equals("Visa")) {
-            Visa visa = new Visa(request.getParameter("cardName"), request.getParameter("cardNum"), request.getParameter("expDate"));
-            method = visa;
-
-            if (order.pay(visa, totalPrice)){
+		PaymentMethod method = PaymentMethodFactory.getPaymentMethod(request.getParameter("payment_method"),request.getParameter("cardName"), request.getParameter("cardNum"), request.getParameter("expDate"));
+		
+		
+            if (order.pay(method, totalPrice)){
                 orderService.saveOrder(order);
                 shoppingCart.clear();
                 set.clear();
                 request.setAttribute("mode","MODE_VISA_PAYMENT");
-            }
             
-        } else if (request.getParameter("payment_method").equals("Mastercard")) {
-            MasterCard mastercard = new MasterCard(request.getParameter("cardName"), request.getParameter("cardNum"), request.getParameter("expDate"));
-            	method = mastercard;
-            if (order.pay(mastercard,totalPrice)) {
-                orderService.saveOrder(order);
-                shoppingCart.clear();
-                set.clear();
-                request.setAttribute("mode","MODE_MASTERCARD_PAYMENT");
-
             }
-            
-        }
 		
 		
 		
@@ -361,6 +350,13 @@ public class ApplicationController {
 	@PostMapping("/save-product")
 	public String saveProduct(@ModelAttribute Product product,BindingResult bindingResult,HttpServletRequest request) {
 		
+//		Product savedProduct = new Product.ProductBuilder()
+//				.setTitle(product.getTitle())
+//				.setManufacturer(product.getManufacturer())
+//				.setPrice(product.getPrice())
+//				.setCategory(product.getCategory())
+//				.setStockLevel(product.getStockLevel())
+//				.setImage(product.getImage()).build();
 		productService.saveMyProduct(product);
 		request.setAttribute("mode", "MODE_HOME");
 		return"adminpage";
